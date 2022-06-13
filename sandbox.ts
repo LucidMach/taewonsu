@@ -19,8 +19,8 @@ interface animeme {
   };
 }
 
-let raw_data = fs.readFileSync(join(".", "posted.json"));
-let posted_animemes = JSON.parse(raw_data.toString());
+let raw_pa = fs.readFileSync(join(".", "posted.json"));
+let posted_animemes = JSON.parse(raw_pa.toString());
 
 axios
   .get("https://www.reddit.com/r/Animemes/top.json?limit=3")
