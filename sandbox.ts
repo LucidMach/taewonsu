@@ -1,6 +1,6 @@
 // ToDo
 // [x] - get top 3 post in past 24hrs from r/animemes
-// [] - check if post is posted
+// [x] - check if post is posted
 // [] - if not poseted then post @taewonsu
 // [] - add post to posted_list
 
@@ -24,4 +24,9 @@ let posted_animemes = JSON.parse(raw_data.toString());
 
 axios
   .get("https://www.reddit.com/r/Animemes/top.json?limit=3")
-  .then((res) => res.data.data.children);
+  .then((res) => res.data.data.children)
+  .then((animemes: animeme[]) => {
+    animemes.forEach((animeme) => {
+      if (posted_animemes[animeme.data.id]) return null;
+    });
+  });
