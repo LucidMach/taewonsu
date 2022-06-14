@@ -1,11 +1,21 @@
 {
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node server.ts",
+    "dev": "nodemon server.ts"
+  },
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/node": "^17.0.42",
     "nodemon": "^2.0.16",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "firebase": "^9.8.3",
+    "instagram-web-api": "^2.2.2"
   }
 }
