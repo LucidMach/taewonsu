@@ -5,6 +5,7 @@
     "dev": "nodemon server.ts"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.42",
     "nodemon": "^2.0.16",
@@ -15,7 +16,12 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "firebase": "^9.8.3",
-    "instagram-web-api": "^2.2.2"
+    "instagram-private-api": "^1.45.3",
+    "is-url": "^1.2.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
+    "tough-cookie": "^3.0.1",
+    "tough-cookie-filestore2": "^1.0.0",
+    "useragent-from-seed": "^1.0.1"
   }
 }
