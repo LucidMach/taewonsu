@@ -6,8 +6,7 @@
   "author": "lucidmach",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/server.js",
-    "postinstall": "tsc",
+    "start": "ts-node server.ts",
     "dev": "nodemon server.ts"
   },
   "devDependencies": {
