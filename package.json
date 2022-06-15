@@ -1,7 +1,13 @@
 {
+  "name": "taewonsu",
+  "version": "1.0.0",
+  "description": "a bot that takes top posts from r/${subreddit} and posts to instagram",
+  "main": "server.js",
+  "author": "lucidmach",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node server.ts",
+    "start": "node dist/server.js",
+    "postinstall": "tsc",
     "dev": "nodemon server.ts"
   },
   "devDependencies": {
@@ -17,5 +23,8 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "instagram-private-api": "^1.45.3"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
