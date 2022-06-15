@@ -12,77 +12,82 @@ import {
 let animemes: animeme_from_reddit[];
 const posted_animemes_location = join(".", "posted_animemes.json");
 
+const fetch_past_posts = () => {
+  const raw_pa = fs.readFileSync(posted_animemes_location);
+  const posted_animemes: animeme_in_json = JSON.parse(raw_pa.toString());
+  return posted_animemes;
+};
+
 export const reddit2insta = async (
   ig_uname: string,
   ig_pass: string,
-  subreddit: string
+  subreddit: string,
+  top_x?: number
 ) => {
-  // to be hydrated response
-  const response = {
-    login_status: "UNKNOWN",
-    no_of_posts_made: 0,
-  };
-
-  // fetch list of previously posted memes
-  let raw_pa = fs.readFileSync(posted_animemes_location);
-  let posted_animemes: animeme_in_json = JSON.parse(raw_pa.toString());
+  var status = {};
 
   // logging into instagram
   const ig = new IgApiClient();
   ig.state.generateDevice(ig_uname);
   const auth = await ig.account.login(ig_uname, ig_pass);
-  auth.pk ? console.log("SUCCESSFUL LOGIN") : console.log("LOGIN FAILED");
-  auth.pk
-    ? (response.login_status = "SUCCESS")
-    : (response.login_status = "FAILED");
+  if (!auth.pk) return "LOGIN FAILED";
+
+  // fetching past memes
+  let posted_animemes = fetch_past_posts();
 
   // fetching memes from reddit
   const res = await axios.get(
-    `https://www.reddit.com/r/${subreddit}/top.json?limit=10`
+    `https://www.reddit.com/r/${subreddit}/top.json?limit=${top_x ? top_x : 3}`
   );
   animemes = res.data.data.children;
 
   // checking if a meme previosly posted, if not posts
-  let memes_processed = 0;
-  animemes.forEach(async (animeme) => {
-    // check if meme is image and previosly posted
-    if (animeme.data.url.split(".")[0].split("://")[1] === "v") return null;
-    if (posted_animemes[animeme.data.id]) return null;
+  const p = new Promise((resolve, reject) => {
+    animemes.forEach(async (animeme, i) => {
+      // check if meme is image and previosly posted
+      if (animeme.data.url.split(".")[0].split("://")[1] === "v") {
+        status[i] = `ohh snap :( this a video dummy`;
+        return null;
+      }
+      if (posted_animemes[animeme.data.id]) {
+        status[i] = `seen this`;
+        return null;
+      }
 
-    const animeme_to_post: animeme_to_insta = {
-      title: animeme.data.title,
-      author: animeme.data.author,
-      url: animeme.data.url,
-    };
-    // try post meme... known causes of failure: image aspect ratio / size
-    try {
+      const animeme_to_post: animeme_to_insta = {
+        title: animeme.data.title,
+        author: animeme.data.author,
+        url: animeme.data.url,
+      };
+
       // generate buffer from image
       const imageBuffer = await get({
         url: animeme_to_post.url,
         encoding: null,
       });
 
-      // try post
-      const publishResult = await ig.publish.photo({
-        file: imageBuffer,
-        caption: `sauce: u/${animeme_to_post.author}\n${animeme_to_post.title} ¯\\_(ツ)_/¯\n.\n.\n.\n.\n.\n#animemes #reddit #redditmemes #anime #anime #manga #weeb #weebmemes #otaku #otakumemes`,
-      });
-
-      // update list of posted memes
-      if (publishResult.status === "ok") {
-        posted_animemes[animeme.data.id] = animeme_to_post;
-        fs.writeFileSync(
-          posted_animemes_location,
-          JSON.stringify(posted_animemes)
-        );
-        response.no_of_posts_made = response.no_of_posts_made + 1;
-        memes_processed++;
+      try {
+        const publishResult = await ig.publish.photo({
+          file: imageBuffer,
+          caption: `sauce: u/${animeme_to_post.author}\n${animeme_to_post.title} ¯\\_(ツ)_/¯\n.\n.\n.\n.\n.\n#animemes #reddit #redditmemes #anime #anime #manga #weeb #weebmemes #otaku #otakumemes`,
+        });
+        if (publishResult.status === "ok") {
+          status[i] = `much wow!`;
+          // update list of posted memes
+          posted_animemes[animeme.data.id] = animeme_to_post;
+          fs.writeFileSync(
+            posted_animemes_location,
+            JSON.stringify(posted_animemes)
+          );
+        }
+      } catch (error) {
+        status[i] = "baka! noni aspect ratio";
+        console.log(error);
       }
-    } catch (error) {
-      console.log("work on fixing that image size thing you sucker");
-      memes_processed++;
-    }
-    // returning a response
-    if (memes_processed === animemes.length) return response;
+      console.log(status);
+      if (i == animemes.length - 1) resolve(status);
+    });
   });
+  ig.account.logout();
+  return p.then((msg) => msg);
 };

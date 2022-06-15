@@ -15,21 +15,28 @@ config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// For parsing application/json
+app.use(express.json());
+// For parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.json({
-    protocol: req.protocol,
-    host: req.get("host"),
-    pathname: req.originalUrl,
+    available_endpoints: "GET /showtime",
   });
 });
 
 app.get("/showtime", async (req, res) => {
+  const top_x = req.body.top_x;
   const msg = await reddit2insta(
     process.env.IG_USERNAME,
     process.env.IG_PASSWORD,
-    process.env.R_SUB
+    process.env.R_SUB,
+    top_x
   );
-  res.json(msg);
+  res.json({
+    status: msg ? msg : "SUCCESS",
+  });
 });
 
 app.listen(port, () => console.log(`🚀 @ http://localhost:${port}`));
