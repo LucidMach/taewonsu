@@ -8,14 +8,28 @@
 import { config } from "dotenv";
 
 import express from "express";
-import { reddit_sequence } from "./sandbox";
+import { reddit2insta } from "./reddit2insta";
 
 config();
 
 const app = express();
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 5000;
 
-// app.listen(port, () => console.log(`🚀 @ https://localhost:${port}`));
-app.listen(port, async () => {
-  reddit_sequence(process.env.IG_USERNAME, process.env.IG_PASSWORD);
+app.get("/", (req, res) => {
+  res.json({
+    protocol: req.protocol,
+    host: req.get("host"),
+    pathname: req.originalUrl,
+  });
 });
+
+app.get("/showtime", async (req, res) => {
+  const msg = await reddit2insta(
+    process.env.IG_USERNAME,
+    process.env.IG_PASSWORD,
+    process.env.R_SUB
+  );
+  res.json(msg);
+});
+
+app.listen(port, () => console.log(`🚀 @ http://localhost:${port}`));
