@@ -26,11 +26,16 @@ export const reddit2insta = async (
 ) => {
   var status = {};
 
-  // logging into instagram
   const ig = new IgApiClient();
   ig.state.generateDevice(ig_uname);
-  const auth = await ig.account.login(ig_uname, ig_pass);
-  if (!auth.pk) return "LOGIN FAILED";
+  // logging into instagram
+  try {
+    const auth = await ig.account.login(ig_uname, ig_pass);
+    if (!auth.pk) return "LOGIN FAILED";
+  } catch (error) {
+    console.log(error);
+    return "LOGIN BLOCKED";
+  }
 
   // fetching past memes
   let posted_animemes = fetch_past_posts();
