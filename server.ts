@@ -22,16 +22,19 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.json({
-    available_endpoints: "GET /showtime",
+    autopost_memes: req.protocol + "://" + req.get("host") + `/reddit2insta`,
+    github: "https://github.com/LucidMach/taewonsu",
+    insta_url: `https://www.instagram.com/${process.env.IG_USERNAME}/`,
   });
 });
 
-app.get("/showtime", async (req, res) => {
+app.get("/reddit2insta", async (req, res) => {
   const top_x = req.body.top_x;
   const msg = await reddit2insta(
     process.env.IG_USERNAME,
     process.env.IG_PASSWORD,
     process.env.R_SUB,
+    process.env.IG_HASHTAGS,
     top_x
   );
   res.json({
