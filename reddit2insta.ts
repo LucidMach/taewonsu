@@ -24,7 +24,6 @@ export const reddit2insta = async (
 
   // logging into instagram
   try {
-    await ig.simulate.preLoginFlow();
     const auth = await ig.account.login(ig_uname, ig_pass);
     if (!auth.pk) return "LOGIN FAILED";
   } catch (error) {
