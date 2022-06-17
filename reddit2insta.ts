@@ -95,5 +95,5 @@ export const reddit2insta = async (
       console.log("work on fixing that image size thing you sucker");
     }
   });
-  return "hi";
+  return "SUCCESS - UPLOADING NEW IMAGE MEMES";
 };
