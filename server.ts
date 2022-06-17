@@ -38,7 +38,7 @@ app.get("/reddit2insta", async (req, res) => {
     top_x
   );
   res.json({
-    status: msg ? msg : "SUCCESS",
+    status: msg ? msg : "UPLOADING NEW IMAGE MEMES ONLY",
   });
 });
 

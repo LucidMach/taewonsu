@@ -43,6 +43,8 @@ export const reddit2insta = async (
 
   // inspecting new meme
   animemes.forEach(async (animeme, i) => {
+    console.log("\n" + animeme.data.title);
+
     // check if meme is image and new
     if (animeme.data.url.split(".")[0].split("://")[1] === "v") {
       console.log(":( video desu");
@@ -81,14 +83,17 @@ export const reddit2insta = async (
 
       if (publishResult.status === "ok") {
         // update list of posted memes
+
         posted_animemes[animeme.data.id] = animeme_to_post;
         fs.writeFileSync(
           posted_animemes_location,
           JSON.stringify(posted_animemes)
         );
+        console.log("updated posted memes");
       }
     } catch (error) {
       console.log("work on fixing that image size thing you sucker");
     }
   });
+  return "hi";
 };
