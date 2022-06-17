@@ -38,7 +38,7 @@ app.get("/reddit2insta", async (req, res) => {
     top_x
   );
   res.json({
-    status: msg ? msg : "UPLOADING NEW IMAGE MEMES ONLY",
+    status: msg ? msg : "FAILURE - YOU SHOULDN'T BE SEEING THIS AT ALL",
   });
 });
 
