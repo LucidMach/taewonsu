@@ -35,6 +35,7 @@ app.get("/reddit2insta", async (req, res) => {
     process.env.IG_PASSWORD,
     process.env.R_SUB,
     process.env.IG_HASHTAGS,
+    process.env.MONGO_URL,
     top_x
   );
   res.json({

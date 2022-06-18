@@ -22,7 +22,8 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "instagram-private-api": "^1.45.3"
+    "instagram-private-api": "^1.45.3",
+    "mongodb": "^4.7.0"
   },
   "engines": {
     "node": "16.x"
