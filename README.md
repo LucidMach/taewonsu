@@ -12,7 +12,13 @@ a _customizable bot_ that takes **top memes** of the _day_ from `r/subreddit` an
     git clone https://github.com/LucidMach/taewonsu.git
     ```
 
-3.  install all dependencies
+3.  switch to `mongo` branch if want to use mongodb instead of json + file system
+
+    ```
+    git checkout mongo
+    ```
+
+4.  install all dependencies
 
     ```
     // using yarn
@@ -22,20 +28,21 @@ a _customizable bot_ that takes **top memes** of the _day_ from `r/subreddit` an
     npm i
     ```
 
-4.  create a file `.env` and set the following environment variables
+5.  create a file `.env` and set the following environment variables
 
     ```
     IG_USERNAME=#{your_username}
     IG_PASSWORD=#{your_password}
     R_SUB=#{subreddit_name}
     IG_HASHTAGS=#{list of hashtags}
+    MONGO_URL=${connection string of mongodb instance} // only in mongo branch
     ```
 
     > **_NOTE:_** to **customize caption** you'll have to dig into the code **yourself**... cuz this project was started with the **major intention** being **creditting the original creators**
 
     > **_SIDE-NOTE:_** DO NOT type in the **#{}**
 
-5.  test it locally on your machine with:
+6.  test it locally on your machine with:
 
     ```
     // requires typescript so might need tsc being installed globally
@@ -45,13 +52,13 @@ a _customizable bot_ that takes **top memes** of the _day_ from `r/subreddit` an
     yarn start
     ```
 
-6.  deploy...
+7.  deploy...
 
     > this repo is **preconfigured** for a **heroku** deploy...
 
     > **don't forget** to include the **env variable** in heroku's **config variables**
 
-7.  setup a `webhook` that'll trigger the bot every day/hr (IFTTT recommended)
+8.  setup a `webhook` that'll trigger the bot every day/hr (IFTTT recommended)
 
     [IFTTT's guide to webhooks](https://ifttt.com/explore/what-is-a-webhook)
 

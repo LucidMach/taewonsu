@@ -38,18 +38,16 @@ export const reddit2insta = async (
 
   // fetching posted memes
   let posted_animemes: animeme_in_json;
-
   try {
     await client.connect();
-
     const db = client.db("taewonsu");
     const col = db.collection("posted_memes");
-
     // fetching past memes
     posted_animemes = await col.findOne({ _id: "v1" });
   } finally {
     await client.close();
   }
+
   // fetching new memes from reddit
   const res = await axios.get(
     `https://www.reddit.com/r/${subreddit}/top.json?limit=${top_x ? top_x : 3}`
@@ -58,36 +56,38 @@ export const reddit2insta = async (
 
   // inspecting new meme
   animemes.forEach(async (animeme, i) => {
-    console.log(animeme.data.title);
-
-    // check if meme is image and new
-    if (animeme.data.url.split(".")[0].split("://")[1] === "v") {
-      console.log(":( video desu");
-      return null;
-    }
-    if (posted_animemes[animeme.data.id]) {
-      console.log("seen this!");
-      return null;
-    }
-
+    // denoising reddit data
     const animeme_to_post: animeme_to_insta = {
       title: animeme.data.title,
       author: animeme.data.author,
       url: animeme.data.url,
     };
 
-    // generate buffer from image
+    // check if meme is IMAGE and NEW
+    if (animeme.data.url.split(".")[0].split("://")[1] === "v") {
+      console.log(animeme.data.title);
+      console.log(":( video desu \n");
+      return null;
+    }
+    if (posted_animemes[animeme.data.id]) {
+      console.log(animeme.data.title);
+      console.log("seen this! \n");
+      return null;
+    }
+
+    // fetching image from url
     const imageBuffer = await get({
       url: animeme_to_post.url,
       encoding: null,
     });
 
-    // hashtag generation
+    // generation hashtags
     const hashtag_list = ig_hashtags.split(" ");
     const hashtags = hashtag_list.reduce((hashtags, hashtag) => {
       return hashtags + ` #${hashtag}`;
     });
 
+    // upload sequence and error handling
     try {
       const publishResult = await ig.publish.photo({
         file: imageBuffer,
@@ -104,14 +104,16 @@ export const reddit2insta = async (
           const col = db.collection("posted_memes");
 
           await col.findOneAndReplace({ _id: "v1" }, posted_animemes);
-          console.log("added " + animeme.data.url);
+          console.log(animeme.data.title);
+          console.log("ADDED " + animeme.data.url + "\n");
         } finally {
           await client.close();
         }
       }
     } catch (error) {
-      console.log("work on fixing that image size thing you sucker");
+      console.log(animeme.data.title);
+      console.log("work on fixing that image size thing you sucker \n");
     }
   });
-  return "SUCCESS - UPLOADING NEW IMAGE MEMES";
+  return "SUCCESSFULLY INITIATED UPLOADING OF THE NEW IMAGE MEMES";
 };
