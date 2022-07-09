@@ -55,4 +55,22 @@ a _customizable bot_ that takes **top memes** of the _day_ from `r/subreddit` an
 
     [IFTTT's guide to webhooks](https://ifttt.com/explore/what-is-a-webhook)
 
-    [sample IFTTT applet used for @taewonsu on instagram](https://ifttt.com/applets/rAzwPXVZ-if-every-day-at-05-00-pm-then-make-a-web-request)
+    **7.a.** create a new applet at [IFTTT](https://ifttt.com/create)
+
+    ![IFTTT HOME](/assets/7a.png)
+
+    **7.b.** set `if this` condition to **day and time**
+
+    ![IFTTT IF THIS](/assets/7b.png)
+
+    **7.c.** set applet to trigger at a specific time
+
+    ![IFTTT DAY and TIME](/assets/7c.png)
+
+    **7.d.** set `then that` condition to **webhooks**
+
+    ![IFTTT THEN THAT](/assets/7d.png)
+
+    **7.e.** set **URL** for _webhook_
+
+    ![IFTT WebHooks](/assets/7e.png)
