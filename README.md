@@ -2,6 +2,16 @@
 
 a _customizable bot_ that takes **top memes** of the _day_ from `r/subreddit` and posts them on your **instagram page**
 
+# Guides
+
+**1. Heroku SetUp Video Guide**
+
+<div align="center">
+
+[![Heroku SetUp Video Guide](https://img.youtube.com/vi/Wr-6jx4DILA/0.jpg)](https://youtu.be/Q9vDaU8piKc)
+
+</div>
+
 # SetUp
 
 1.  install any LTS `nodejs` (latest recommended)
